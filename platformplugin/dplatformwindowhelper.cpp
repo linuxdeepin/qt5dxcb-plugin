@@ -321,7 +321,11 @@ void DPlatformWindowHelper::setVisible(bool visible)
         Utility::setMotifWmHints(helper->m_nativeWindow->QNativeWindow::winId(), cw_hints);
 
         if (helper->m_nativeWindow->window()->modality() != Qt::NonModal) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 1)
             window->setNetWmStates(window->netWmStates() | QNativeWindow::NetWmStateModal);
+#else
+            window->setNetWmState(true, window->atom(QXcbAtom::_NET_WM_STATE_MODAL));
+#endif
         }
 #endif
 
@@ -362,7 +366,11 @@ void DPlatformWindowHelper::setWindowState(Qt::WindowStates state)
     if (state == Qt::WindowMinimized
             && (window->m_windowState == Qt::WindowMaximized
                 || window->m_windowState == Qt::WindowFullScreen)) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 1)
         window->changeNetWmState(true, Utility::internAtom("_NET_WM_STATE_HIDDEN"));
+#else
+        window->setNetWmState(true, Utility::internAtom("_NET_WM_STATE_HIDDEN"));
+#endif
         Utility::XIconifyWindow(window->connection()->xlib_display(),
                                 window->m_window,
                                 window->connection()->primaryScreenNumber());
