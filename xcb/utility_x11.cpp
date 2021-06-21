@@ -231,13 +231,13 @@ void Utility::setFrameExtents(WId wid, const QMargins &margins)
         return;
     }
 
-    int32_t datas[4];
-    datas[0] = int32_t(margins.left());
-    datas[1] = int32_t(margins.right());
-    datas[2] = int32_t(margins.top());
-    datas[3] = int32_t(margins.bottom());
+    int32_t data[4];
+    data[0] = int32_t(margins.left());
+    data[1] = int32_t(margins.right());
+    data[2] = int32_t(margins.top());
+    data[3] = int32_t(margins.bottom());
 
-    xcb_change_property_checked(QX11Info::connection(), XCB_PROP_MODE_REPLACE, xcb_window_t(wid), frameExtents, XCB_ATOM_CARDINAL, 32, 4, datas);
+    xcb_change_property_checked(QX11Info::connection(), XCB_PROP_MODE_REPLACE, xcb_window_t(wid), frameExtents, XCB_ATOM_CARDINAL, 32, 4, data);
 }
 
 static QVector<xcb_rectangle_t> qregion2XcbRectangles(const QRegion &region)
